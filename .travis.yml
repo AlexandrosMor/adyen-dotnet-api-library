@@ -8,3 +8,9 @@ script:
 - dotnet build /p:TargetFrameworks=netcoreapp2.0
 - dotnet test Adyen.Test/Adyen.Test.csproj
 - dotnet test /p:CollectCoverage=true
+
+SCRIPT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CAKE_TASK=Coveralls
+
+echo "Building task ${CAKE_TASK}"
+"$build.sh" -t "${CAKE_TASK}"

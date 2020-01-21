@@ -5,6 +5,5 @@ dotnet: 2.0.0
 install:
 - dotnet restore
 script:
-- ./build/travis.sh
 - dotnet build /p:TargetFrameworks=netcoreapp2.0
 - dotnet test Adyen.Test/Adyen.Test.csproj

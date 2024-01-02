@@ -33,6 +33,52 @@ namespace Adyen.Model.BalancePlatform
     public partial class AddressRequirement : IEquatable<AddressRequirement>, IValidatableObject
     {
         /// <summary>
+        /// Defines RequiredAddressFields
+        /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
+        public enum RequiredAddressFieldsEnum
+        {
+            /// <summary>
+            /// Enum City for value: city
+            /// </summary>
+            [EnumMember(Value = "city")]
+            City = 1,
+
+            /// <summary>
+            /// Enum Country for value: country
+            /// </summary>
+            [EnumMember(Value = "country")]
+            Country = 2,
+
+            /// <summary>
+            /// Enum Line1 for value: line1
+            /// </summary>
+            [EnumMember(Value = "line1")]
+            Line1 = 3,
+
+            /// <summary>
+            /// Enum PostalCode for value: postalCode
+            /// </summary>
+            [EnumMember(Value = "postalCode")]
+            PostalCode = 4,
+
+            /// <summary>
+            /// Enum StateOrProvince for value: stateOrProvince
+            /// </summary>
+            [EnumMember(Value = "stateOrProvince")]
+            StateOrProvince = 5
+
+        }
+
+
+
+        /// <summary>
+        /// List of address fields.
+        /// </summary>
+        /// <value>List of address fields.</value>
+        [DataMember(Name = "requiredAddressFields", EmitDefaultValue = false)]
+        public List<RequiredAddressFieldsEnum> RequiredAddressFields { get; set; }
+        /// <summary>
         /// **addressRequirement**
         /// </summary>
         /// <value>**addressRequirement**</value>
@@ -65,7 +111,7 @@ namespace Adyen.Model.BalancePlatform
         /// <param name="description">Specifies the required address related fields for a particular route..</param>
         /// <param name="requiredAddressFields">List of address fields..</param>
         /// <param name="type">**addressRequirement** (required) (default to TypeEnum.AddressRequirement).</param>
-        public AddressRequirement(string description = default(string), List<string> requiredAddressFields = default(List<string>), TypeEnum type = TypeEnum.AddressRequirement)
+        public AddressRequirement(string description = default(string), List<RequiredAddressFieldsEnum> requiredAddressFields = default(List<RequiredAddressFieldsEnum>), TypeEnum type = TypeEnum.AddressRequirement)
         {
             this.Type = type;
             this.Description = description;
@@ -78,13 +124,6 @@ namespace Adyen.Model.BalancePlatform
         /// <value>Specifies the required address related fields for a particular route.</value>
         [DataMember(Name = "description", EmitDefaultValue = false)]
         public string Description { get; set; }
-
-        /// <summary>
-        /// List of address fields.
-        /// </summary>
-        /// <value>List of address fields.</value>
-        [DataMember(Name = "requiredAddressFields", EmitDefaultValue = false)]
-        public List<string> RequiredAddressFields { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -139,8 +178,6 @@ namespace Adyen.Model.BalancePlatform
                 ) && 
                 (
                     this.RequiredAddressFields == input.RequiredAddressFields ||
-                    this.RequiredAddressFields != null &&
-                    input.RequiredAddressFields != null &&
                     this.RequiredAddressFields.SequenceEqual(input.RequiredAddressFields)
                 ) && 
                 (
@@ -162,10 +199,7 @@ namespace Adyen.Model.BalancePlatform
                 {
                     hashCode = (hashCode * 59) + this.Description.GetHashCode();
                 }
-                if (this.RequiredAddressFields != null)
-                {
-                    hashCode = (hashCode * 59) + this.RequiredAddressFields.GetHashCode();
-                }
+                hashCode = (hashCode * 59) + this.RequiredAddressFields.GetHashCode();
                 hashCode = (hashCode * 59) + this.Type.GetHashCode();
                 return hashCode;
             }

@@ -27,7 +27,7 @@ The library supports all APIs under the following services:
 | [Classic Platforms Fund API](https://docs.adyen.com/api-explorer/Fund/6/overview)                                            | This API is used for the classic integration. If you are just starting your implementation, refer to our new integration guide instead.                                                                                                                                                                                                 | [PlatformsFund](Adyen/Service/PlatformsFundService.cs)                                           | **v6**                   |
 | [Classic Platforms Hosted Onboarding Page API](https://docs.adyen.com/api-explorer/Hop/6/overview)                           | This API is used for the classic integration. If you are just starting your implementation, refer to our new integration guide instead.                                                                                                                                                                                                 | [PlatformsHostedOnboardingPage](Adyen/Service/PlatformsHostedOnboardingPage)                     | **v6**                   |
 | [Classic Platforms Notification Configuration API](https://docs.adyen.com/api-explorer/NotificationConfiguration/6/overview) | This API is used for the classic integration. If you are just starting your implementation, refer to our new integration guide instead.                                                                                                                                                                                                 | [PlatformsNotificationConfiguration](Adyen/Service/PlatformsNotificationConfigurationService.cs) | **v6**                   |
-| [Disputes API](https://docs.adyen.com/api-explorer/Disputes/30/overview)                                                     | You can use the [Disputes API](https://docs.adyen.com/risk-management/disputes-api) to automate the dispute handling process so that you can respond to disputes and chargebacks as soon as they are initiated. The Disputes API lets you retrieve defense reasons, supply and delete defense documents, and accept or defend disputes. | [Disputes](Adyen/Service/DisputesService.cs)                                                                                   | **v30**                  |
+| [Disputes API](https://docs.adyen.com/api-explorer/Disputes/30/overview)                                                     | You can use the [Disputes API](https://docs.adyen.com/risk-management/disputes-api) to automate the dispute handling process so that you can respond to disputes and chargebacks as soon as they are initiated. The Disputes API lets you retrieve defense reasons, supply and delete defense documents, and accept or defend disputes. | [Disputes](Adyen/Service/DisputesService.cs)                                                     | **v30**                  |
 
 ## Supported Webhook versions
 The library supports all webhooks under the following model directories:
@@ -37,11 +37,11 @@ The library supports all webhooks under the following model directories:
 | [Authentication Webhooks](https://docs.adyen.com/api-explorer/Checkout/latest/overview)           | You can use the same integration for payments made with cards (including 3D Secure), mobile wallets, and local payment methods (for example, iDEAL and Sofort).                                                                                                                     | [AcsWebhooks](Adyen/Model/AcsWebhooks)                     | **v1**            |
 | [Configuration Webhooks](https://docs.adyen.com/api-explorer/balanceplatform-webhooks/1/overview) | You can use these webhooks to build your implementation. For example, you can use this information to update internal statuses when the status of a capability is changed.                                                                                                          | [ConfigurationWebhooks](Adyen/Model/ConfigurationWebhooks) | **v1**            |
 | [Transfer Webhooks](https://docs.adyen.com/api-explorer/transfer-webhooks/4/overview)             | You can use these webhooks to build your implementation. For example, you can use this information to update balances in your own dashboards or to keep track of incoming funds.                                                                                                    | [TransferWebhooks](Adyen/Model/TransferWebhooks)           | **v4**            |
-| [Transaction Webhooks](https://docs.adyen.com/api-explorer/transaction-webhooks/4/overview)       | Adyen sends webhooks to inform your system about incoming and outgoing transfers in your platform. You can use these webhooks to build your implementation. For example, you can use this information to update balances in your own dashboards or to keep track of incoming funds. | [TransactionWebhooks](Adyen/Model/TransactionWebhooks)      | **v4**            |
+| [Transaction Webhooks](https://docs.adyen.com/api-explorer/transaction-webhooks/4/overview)       | Adyen sends webhooks to inform your system about incoming and outgoing transfers in your platform. You can use these webhooks to build your implementation. For example, you can use this information to update balances in your own dashboards or to keep track of incoming funds. | [TransactionWebhooks](Adyen/Model/TransactionWebhooks)     | **v4**            |
 | [Report Webhooks](https://docs.adyen.com/api-explorer/report-webhooks/1/overview)                 | You can download reports programmatically by making an HTTP GET request, or manually from your Balance Platform Customer Area                                                                                                                                                       | [ReportWebhooks](Adyen/Model/ReportWebhooks)               | **v1**            |
 | [Management Webhooks](https://docs.adyen.com/api-explorer/ManagementNotification/3/overview)      | Adyen uses webhooks to inform your system about events that happen with your Adyen company and merchant accounts, stores, payment terminals, and payment methods when using Management API.                                                                                         | [ManagementWebhooks](Adyen/Model/ManagementWebhooks)       | **v3**            |
 | [Notification Webhooks](https://docs.adyen.com/api-explorer/Webhooks/1/overview)                  | We use webhooks to send you updates about payment status updates, newly available reports, and other events that you can subscribe to. For more information, refer to our documentation                                                                                             | [Notification](Adyen/Model/Notification)                   | **v1**            |
-
+| [Classic Platform Webhooks](https://docs.adyen.com/api-explorer/Notification/6/overview)          | The Notification API sends notifications to the endpoints specified in a given subscription. Subscriptions are managed through the Notification Configuration API. The API specifications listed here detail the format of each notification.                                       | [PlatformWebhooks](Adyen/Model/PlatformWebhooks)           | **v6**            |
 
 For more information, refer to our [documentation](https://docs.adyen.com/) or the [API Explorer](https://docs.adyen.com/api-explorer/).
 
@@ -107,7 +107,7 @@ dotnet build
 dotnet test
 ```
 ## Using the Cloud Terminal API 
-In order to submit POS request with Cloud Terminal API you need to initialize the client with the Endpoints that it is closer to your region. The Endpoints are available as contacts in [ClientConfig](https://github.com/Adyen/adyen-dotnet-api-library/blob/develop/Adyen/Constants/ClientConfig.cs#L35)
+In order to submit POS request with Cloud Terminal API you need to initialize the client with the Endpoints that it is closer to your region. The Endpoints are available as contacts in [ClientConfig](/Adyen/Constants/ClientConfig.cs)
 For more information please read our [documentation](https://docs.adyen.com/point-of-sale/terminal-api-fundamentals#cloud)
 ```c#
 //Example for EU based Endpoint Syncronous
@@ -223,6 +223,12 @@ To parse the terminal API notifications, please use the following custom deseria
 var serializer = new SaleToPoiMessageSerializer();
 var saleToPoiRequest = serializer.DeserializeNotification(your_terminal_notification);
 ```
+Since the terminal API CardAcquisition AdditionalResponse could be either based64 encoded string or key-value pair, there is a helper class to deserialise it to a custom model AdditionalResponse. 
+```c#
+AdditionalResponse additionalResponse = CardAcquisitionUtil.AdditionalResponse(jsonString);
+```
+
+
 
 ## Parsing BalancePlatform and Management Webhooks
 In order to parse banking webhooks, first validate the webhooks (recommended) by retrieving the hmac key from the webhook header and the hmac signature from the Balance Platform CA configuration page respectively.
@@ -260,7 +266,7 @@ We value your input! Help us enhance our API Libraries and improve the integrati
 
 ## Contributing
 We encourage you to contribute to this repository, so everyone can benefit from new features, bug fixes, and any other improvements.
-Have a look at our [contributing guidelines](https://github.com/Adyen/adyen-dotnet-api-library/blob/develop/CONTRIBUTING.md) to find out how to raise a pull request.
+Have a look at our [contributing guidelines](/CONTRIBUTING.md) to find out how to raise a pull request.
 
 ## Support
 If you have a feature request, or spotted a bug or a technical problem, [create an issue here](https://github.com/Adyen/adyen-dotnet-api-library/issues/new/choose).
@@ -268,7 +274,7 @@ If you have a feature request, or spotted a bug or a technical problem, [create 
 For other questions, [contact our Support Team](https://www.adyen.help/hc/en-us/requests/new?ticket_form_id=360000705420).
 
 ## Licence
-This repository is available under the [MIT license](https://github.com/Adyen/adyen-dotnet-api-library/blob/main/LICENSE).
+This repository is available under the [MIT license](/LICENSE).
 
 ## See also
 * [Adyen docs](https://docs.adyen.com/)

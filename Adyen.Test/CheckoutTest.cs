@@ -23,7 +23,7 @@ namespace Adyen.Test
     public class CheckoutTest : BaseTest
     {
         /// <summary>
-        /// Tests successful checkout client Test URL generation.
+        /// Tests successful checkout client Test URL generation. One change
         /// </summary>
         [TestMethod]
         public void CheckoutEndpointTestEnvironmentSuccessTest()

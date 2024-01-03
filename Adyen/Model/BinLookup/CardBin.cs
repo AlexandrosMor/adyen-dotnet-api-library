@@ -110,6 +110,14 @@ namespace Adyen.Model.BinLookup
         [DataMember(Name = "issuingCountry", EmitDefaultValue = false)]
         public string IssuingCountry { get; set; }
 
+         /// <summary>
+        /// The country where the card was issued from.
+        /// </summary>
+        /// <value>The country where the card was issued from.</value>
+        [DataMember(Name = "issuingCountry", EmitDefaultValue = false)]
+        public string IssuingCountry2 { get; set; }
+
+
         /// <summary>
         /// The currency of the card.
         /// </summary>

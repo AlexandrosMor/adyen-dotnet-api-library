@@ -114,8 +114,8 @@ namespace Adyen.Model.BinLookup
         /// The country where the card was issued from.
         /// </summary>
         /// <value>The country where the card was issued from.</value>
-        [DataMember(Name = "issuingCountry", EmitDefaultValue = false)]
-        public string IssuingCountry2 { get; set; }
+        [DataMember(Name = "testValue", EmitDefaultValue = false)]
+        public string TestValue { get; set; }
 
 
         /// <summary>
@@ -160,6 +160,7 @@ namespace Adyen.Model.BinLookup
             sb.Append("  FundsAvailability: ").Append(FundsAvailability).Append("\n");
             sb.Append("  IssuerBin: ").Append(IssuerBin).Append("\n");
             sb.Append("  IssuingBank: ").Append(IssuingBank).Append("\n");
+            sb.Append("  TestValue: ").Append(TestValue).Append("\n");
             sb.Append("  IssuingCountry: ").Append(IssuingCountry).Append("\n");
             sb.Append("  IssuingCurrency: ").Append(IssuingCurrency).Append("\n");
             sb.Append("  PaymentMethod: ").Append(PaymentMethod).Append("\n");

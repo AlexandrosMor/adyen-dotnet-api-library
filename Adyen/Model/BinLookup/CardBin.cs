@@ -254,6 +254,11 @@ namespace Adyen.Model.BinLookup
                     this.Summary == input.Summary ||
                     (this.Summary != null &&
                     this.Summary.Equals(input.Summary))
+                )&& 
+                (
+                    this.TestValue == input.TestValue ||
+                    (this.TestValue != null &&
+                    this.TestValue.Equals(input.TestValue))
                 );
         }
 
